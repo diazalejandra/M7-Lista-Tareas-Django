@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Lista tareas</h1>
+<form method="post">
+{% csrf_token %}
+  <div class="input-group mb-3">
+  <input type="text" name="titulo" class="form-control" placeholder="Agregar Tarea" aria-label="Nueva Tarea" aria-describedby="button-addon2">
+  <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Crear</button>
+</div>
+</form>
+<form method="get">
+  <table class="table">
+  <thead>
+    <tr>
+      <th>Tarea</th>
+      <th></th>
+      <th></th>
+    </tr>
+    <tr>
+      <th>
+        <input type="text" class="form-control" name="titulo">
+      </th>
+      <th>
+        <a class="btn btn-success" href="/?estado=1">Completados</a>
+<a class="btn btn-warning" href="/?estado=0">Pendientes</a>
+      </th>
+      <th>
+        <button class="btn btn-outline-secondary" type="submit">Filtrar</button>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for task in lista %}
+    <tr>
+      <td>{{ task.titulo }}</td>
+      <td><a class="btn btn-danger btn-sm" href="/tarea/{{ task.id }}/eliminar">Eliminar</a></td>
+      <td>{% if not task.estado %}<a class="btn btn-success btn-sm" href="/tarea/{{ task.id }}/completado">Completado</a>{% endif %}</td>
+    </tr>
+      {% empty %}
+      <tr>
+        <td>No se encontraron registros</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</form>
+
+{% endblock %}
